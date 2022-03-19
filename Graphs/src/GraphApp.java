@@ -1,6 +1,6 @@
 public class GraphApp {
     public static void main(String[] args) {
-        Graph graph = new Graph(true);
+        Graph graph = new Graph(false);
         Vertex a = new Vertex("A");
         Vertex b = new Vertex("B");
         Vertex c = new Vertex("C");
@@ -14,7 +14,11 @@ public class GraphApp {
 
         graph.showNeighbors(neighbors -> {
             for (Vertex neighbor : neighbors) {
-                System.out.print(neighbor.getKey() + " -> ");
+                if (neighbor == null) {
+                    continue;
+                }
+
+                System.out.print(neighbor.getKey() + ", ");
             }
 
             System.out.println();
