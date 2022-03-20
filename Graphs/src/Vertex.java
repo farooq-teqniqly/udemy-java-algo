@@ -39,3 +39,4 @@ public class Vertex {
         this.predecessor = predecessor;
     }
 }
+

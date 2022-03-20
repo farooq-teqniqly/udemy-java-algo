@@ -19,6 +19,10 @@ public class BFSSearcher {
             Vertex currentVertex = this.queue.remove();
 
             for (Vertex neighbor : this.graph.getNeighbors(currentVertex)) {
+                if (neighbor == null) {
+                    continue;
+                }
+
                 if (neighbor.getDiscoveryState() == DiscoveryState.Undiscovered) {
                     neighbor.setDiscoveryState(DiscoveryState.Discovering);
                     neighbor.setDistance(currentVertex.getDistance() + 1);

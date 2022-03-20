@@ -10,25 +10,19 @@ public class Graph {
     }
 
     public void add(Vertex a, Vertex b) {
-        this.addRecursive(a, b, false);
-    }
-
-    private void addRecursive(Vertex a, Vertex b, boolean stop) {
         if (!this.adjacencyMap.containsKey(a.getKey())) {
             List<Vertex> list = new ArrayList<>();
             list.add(a);
-
-            if (b != null) {
-                list.add(b);
-            }
-
+            list.add(b);
             this.adjacencyMap.put(a.getKey(), list);
         } else {
             this.adjacencyMap.get(a.getKey()).add(b);
         }
 
-        if (!this.directed && !stop && b != null) {
-            this.addRecursive(b, a, true);
+        if (!this.adjacencyMap.containsKey(b.getKey())) {
+            List<Vertex> list = new ArrayList<>();
+            list.add(b);
+            this.adjacencyMap.put(b.getKey(), list);
         }
     }
 
