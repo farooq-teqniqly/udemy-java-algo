@@ -1,4 +1,6 @@
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
 
 public class BFSSearcher {
@@ -35,10 +37,21 @@ public class BFSSearcher {
         }
     }
 
-    public Queue<Vertex> path(Vertex source, Vertex target) {
+    public List<Vertex> path(Vertex source, Vertex target) {
+        List<Vertex> pathList = new ArrayList<>();
         Queue<Vertex> pathQueue = new LinkedList<>();
         this.pathRecursive(source, target, pathQueue);
-        return pathQueue;
+
+        while (!pathQueue.isEmpty()) {
+            Vertex x = pathQueue.remove();
+            pathList.add(x);
+
+            if (x.getKey().equals(target.getKey())) {
+                break;
+            }
+        }
+
+        return pathList;
     }
 
     private void pathRecursive(Vertex source, Vertex target, Queue<Vertex> pathQueue) {

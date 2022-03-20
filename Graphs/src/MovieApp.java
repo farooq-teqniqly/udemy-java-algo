@@ -1,9 +1,7 @@
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.List;
-import java.util.Queue;
 import java.util.Scanner;
-import java.util.stream.Collectors;
 
 public class MovieApp {
     public static void main(String[] args) throws FileNotFoundException {
@@ -17,33 +15,32 @@ public class MovieApp {
 
         for (CastMember castMember : castMembers) {
             graph.add(
-                    new MovieVertex(castMember.getTitle().trim(), castMember.getTitleId().trim()),
-                    new ActorVertex(castMember.getActor().trim(), castMember.getActorId().trim()));
+                    new MovieVertex(castMember.getTitleId().trim(), castMember.getTitle().trim()),
+                    new ActorVertex(castMember.getActorId().trim(), castMember.getActor().trim()));
         }
 
         BFSSearcher searcher = new BFSSearcher(graph);
 
-        Vertex source = graph.getAdjacencyMap().get("Kevin Bacon").get(0);
-        Vertex target = graph.getAdjacencyMap().get("Joey Lawrence").get(0);
-
+        Vertex source = graph.getAdjacencyMap().get("nm0000102").get(0);
+        Vertex target = graph.getAdjacencyMap().get("nm0000199").get(0);
 
         searcher.Execute(source);
 
-        List<Vertex> discoveredVerticies = graph.getVerticies()
-                .stream()
-                .filter(v -> v.getDiscoveryState().equals(DiscoveryState.Discovered) &&
-                        v.getDistance() > 6)
-                .collect(Collectors.toList());
+        List<Vertex> path = searcher.path(source, target);
+        int degrees = -1;
 
-        Queue<Vertex> path = searcher.path(source, target);
+        for (Vertex v : path) {
+            System.out.println(v.toString());
 
-        while (!path.isEmpty()) {
-            Vertex x = path.remove();
-            System.out.println(x.toString());
-
-            if (x.getKey().equals(target.getKey())) {
-                break;
+            if (v instanceof ActorVertex) {
+                degrees++;
             }
         }
+
+        System.out.println(((ActorVertex)target).getId() +
+                " has a " +
+                ((ActorVertex)source).getId() +
+                " number of "
+                + degrees);
     }
 }

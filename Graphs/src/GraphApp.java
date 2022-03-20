@@ -1,4 +1,4 @@
-import java.util.Queue;
+import java.util.List;
 
 public class GraphApp {
     public static void main(String[] args) {
@@ -38,11 +38,10 @@ public class GraphApp {
         searcher.Execute(a);
 
         System.out.println("Path from A to G: ");
-        Queue<Vertex> path = searcher.path(a, g);
+        List<Vertex> path = searcher.path(a, g);
 
-        while (!path.isEmpty()) {
-            Vertex x = path.remove();
-            System.out.print(x.getKey() + " -> ");
+        for (Vertex v : path) {
+            System.out.print(v.toString() + " -> ");
         }
     }
 }
