@@ -42,7 +42,7 @@ public class MovieApp {
         BFSSearcher searcher = new BFSSearcher(graph);
 
         Vertex source = graph.getAdjacencyMap().get("nm0000102").get(0);
-        Vertex target = graph.getAdjacencyMap().get("nm0000199").get(0);
+        Vertex target = graph.getAdjacencyMap().get("nm1055413").get(0);
 
         System.out.println("Running BFS.");
 
