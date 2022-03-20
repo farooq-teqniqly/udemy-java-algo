@@ -43,6 +43,7 @@ public class BFSSearcher {
 
     private void pathRecursive(Vertex source, Vertex target, Queue<Vertex> pathQueue) {
         if (source.getKey().equals(target.getKey())) {
+            pathQueue.add(source);
             return;
         }
 
@@ -53,6 +54,6 @@ public class BFSSearcher {
         }
 
         this.pathRecursive(source, predecessor, pathQueue);
-        pathQueue.add(predecessor);
+        pathQueue.add(target);
     }
 }

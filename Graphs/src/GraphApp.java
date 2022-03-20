@@ -1,6 +1,8 @@
+import java.util.Queue;
+
 public class GraphApp {
     public static void main(String[] args) {
-        Graph graph = new Graph(true);
+        Graph graph = new Graph(false);
         Vertex a = new Vertex("A");
         Vertex b = new Vertex("B");
         Vertex c = new Vertex("C");
@@ -35,8 +37,8 @@ public class GraphApp {
         BFSSearcher searcher = new BFSSearcher(graph);
         searcher.Execute(a);
 
-        System.out.println("Path from A to E: ");
-        var path = searcher.path(a, e);
+        System.out.println("Path from A to G: ");
+        Queue<Vertex> path = searcher.path(a, g);
 
         while (!path.isEmpty()) {
             Vertex x = path.remove();

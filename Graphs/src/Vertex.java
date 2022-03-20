@@ -38,5 +38,13 @@ public class Vertex {
     public void setPredecessor(Vertex predecessor) {
         this.predecessor = predecessor;
     }
+
+    @Override
+    public String toString() {
+        return "Vertex{" +
+                "key='" + key + '\'' +
+                '}';
+    }
+
 }
 

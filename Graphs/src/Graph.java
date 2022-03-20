@@ -22,8 +22,18 @@ public class Graph {
         if (!this.adjacencyMap.containsKey(b.getKey())) {
             List<Vertex> list = new ArrayList<>();
             list.add(b);
+
             this.adjacencyMap.put(b.getKey(), list);
         }
+
+        if (!this.directed) {
+            this.adjacencyMap.get(b.getKey()).add(a);
+        }
+
+    }
+
+    public Map<String, List<Vertex>> getAdjacencyMap() {
+        return this.adjacencyMap;
     }
 
     public List<Vertex> getNeighbors(Vertex vertex) {
