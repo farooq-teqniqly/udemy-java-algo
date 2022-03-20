@@ -43,10 +43,10 @@ public class BFSSearcher {
         this.pathRecursive(source, target, pathQueue);
 
         while (!pathQueue.isEmpty()) {
-            Vertex x = pathQueue.remove();
-            pathList.add(x);
+            Vertex vertex = pathQueue.remove();
+            pathList.add(vertex);
 
-            if (x.getKey().equals(target.getKey())) {
+            if (vertex.getKey().equals(target.getKey())) {
                 break;
             }
         }
