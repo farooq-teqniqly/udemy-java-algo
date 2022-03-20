@@ -2,7 +2,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class MovieFileProcessor implements MapFileProcessor {
+public class MovieMapFileProcessor implements MapFileProcessor {
 
     @Override
     public List<CastMember> process(Scanner scanner) {
@@ -13,14 +13,19 @@ public class MovieFileProcessor implements MapFileProcessor {
             String line = scanner.nextLine();
 
             if (lineCount > 0) {
-                String[] items = line.split(",");
+                String[] items = line.split("\\|");
 
-                if (items.length != 4) {
+                if (items.length != 3) {
                     continue;
                 }
 
-                CastMember castMember = new CastMember(items[0], items[1], items[2], items[3]);
-                castMembers.add(castMember);
+                String titleId = items[0];
+                String[] cast = items[2].split(",");
+
+                for (String actorId : cast) {
+                    CastMember castMember = new CastMember(titleId, items[1], actorId, "");
+                    castMembers.add(castMember);
+                }
             }
 
             lineCount++;
@@ -29,4 +34,3 @@ public class MovieFileProcessor implements MapFileProcessor {
         return castMembers;
     }
 }
-

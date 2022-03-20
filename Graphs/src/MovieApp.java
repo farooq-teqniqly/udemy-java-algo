@@ -5,22 +5,74 @@ import java.util.Scanner;
 
 public class MovieApp {
     public static void main(String[] args) throws FileNotFoundException {
-        String fileName = "C:\\src\\my\\uwf-cop6416\\project\\py\\data\\processed\\movie_casts.csv";
+        if (args.length != 3) {
+            System.out.println("USAGE: MovieApp [movie map file path] [source actor id] [target actor id]");
+            return;
+        }
 
-        System.out.println("Processing file " + fileName);
+        String fileName = args[0];
+        String sourceActorId = args[1];
+        String targetActorId = args[2];
 
-        MovieFileProcessor processor = new MovieFileProcessor();
+        List<CastMember> castMembers = getCastMembers(fileName);
 
-        long start = System.currentTimeMillis();
-        List<CastMember> castMembers = processor.process(new Scanner(new File(fileName)));
-        long end = System.currentTimeMillis();
+        Graph graph = createGraph(castMembers);
 
-        System.out.println("Created " +
-                castMembers.size() +
-                " movie records in " +
-                (end - start) +
-                " ms.");
+        Vertex source = graph.getAdjacencyMap().get(sourceActorId).get(0);
+        Vertex target = graph.getAdjacencyMap().get(targetActorId).get(0);
 
+        BFSSearcher searcher = runBFS(graph, source, target);
+
+        List<Vertex> path = getShortestPath(source, target, searcher);
+
+        printShortestPath(source, target, path);
+    }
+
+    private static void printShortestPath(Vertex source, Vertex target, List<Vertex> path) {
+        int degrees = -1;
+
+        for (Vertex v : path) {
+            System.out.print(v.toString());
+
+            if (v instanceof ActorVertex) {
+                degrees++;
+
+                if (!v.getKey().equals(source.getKey())) {
+                    System.out.println(" was in");
+                }
+
+            }
+
+            if (v instanceof MovieVertex) {
+                System.out.println(" with");
+            }
+        }
+
+        System.out.println();
+        System.out.println(target.getKey() +
+                " has a " +
+                source.getKey() +
+                " number of "
+                + degrees);
+    }
+
+    private static List<Vertex> getShortestPath(Vertex source, Vertex target, BFSSearcher searcher) {
+        long start;
+        long end;
+        System.out.println("Getting shortest path.");
+
+        start = System.currentTimeMillis();
+        List<Vertex> path = searcher.path(source, target);
+        end = System.currentTimeMillis();
+
+        System.out.println("Got shortest path in " + (end - start) + " ms.");
+
+        return path;
+    }
+
+    private static Graph createGraph(List<CastMember> castMembers) {
+        long start;
+        long end;
         Graph graph = new Graph(false);
 
         start = System.currentTimeMillis();
@@ -39,10 +91,31 @@ public class MovieApp {
                 + (end - start) +
                 " ms.");
 
-        BFSSearcher searcher = new BFSSearcher(graph);
+        return graph;
+    }
 
-        Vertex source = graph.getAdjacencyMap().get("nm0000102").get(0);
-        Vertex target = graph.getAdjacencyMap().get("nm1055413").get(0);
+    private static List<CastMember> getCastMembers(String fileName) throws FileNotFoundException {
+        System.out.println("Processing file " + fileName);
+
+        MapFileProcessor processor = new MovieMapFileProcessor();
+
+        long start = System.currentTimeMillis();
+        List<CastMember> castMembers = processor.process(new Scanner(new File(fileName)));
+        long end = System.currentTimeMillis();
+
+        System.out.println("Created " +
+                castMembers.size() +
+                " movie records in " +
+                (end - start) +
+                " ms.");
+
+        return castMembers;
+    }
+
+    private static BFSSearcher runBFS(Graph graph, Vertex source, Vertex target) {
+        long start;
+        long end;
+        BFSSearcher searcher = new BFSSearcher(graph);
 
         System.out.println("Running BFS.");
 
@@ -52,28 +125,7 @@ public class MovieApp {
 
         System.out.println("BFS ran in " + (end - start) + " ms.");
 
-        System.out.println("Getting shortest path.");
-
-        start = System.currentTimeMillis();
-        List<Vertex> path = searcher.path(source, target);
-        end = System.currentTimeMillis();
-
-        System.out.println("Got shortest path in " + (end - start) + " ms.");
-
-        int degrees = -1;
-
-        for (Vertex v : path) {
-            System.out.println(v.toString());
-
-            if (v instanceof ActorVertex) {
-                degrees++;
-            }
-        }
-
-        System.out.println(((ActorVertex)target).getId() +
-                " has a " +
-                ((ActorVertex)source).getId() +
-                " number of "
-                + degrees);
+        return searcher;
     }
 }
+

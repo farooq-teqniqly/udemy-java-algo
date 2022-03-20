@@ -1,22 +1,22 @@
 public class MovieVertex extends Vertex {
 
-    private final String id;
+    private final String title;
 
-    public MovieVertex(String key, String id) {
+    public MovieVertex(String key, String title) {
         super(key);
 
-        this.id = id;
+        this.title = title;
     }
 
-    public String getId() {
-        return id;
+    public String getTitle() {
+        return title;
     }
 
     @Override
     public String toString() {
         return "MovieVertex{" +
                 "key='" + super.getKey() + '\'' +
-                "id='" + id + '\'' +
+                "title='" + title + '\'' +
                 '}';
     }
 }
