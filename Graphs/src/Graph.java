@@ -1,7 +1,4 @@
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Consumer;
 
 public class Graph {
@@ -35,11 +32,25 @@ public class Graph {
         }
     }
 
-    public void showNeighbors(Consumer<List<Vertex>> callback) {
-        if (callback != null) {
-            for (String key : this.adjacencyMap.keySet()) {
-                callback.accept(this.adjacencyMap.get(key));
-            }
+    public List<Vertex> getNeighbors(Vertex vertex) {
+        List<Vertex> vertices = this.adjacencyMap.get(vertex.getKey());
+        int length = vertices.size();
+
+        if (length == 1) {
+            return new ArrayList<>();
         }
+
+        return vertices.subList(1, vertices.size());
     }
+
+    public List<Vertex> getVerticies() {
+        List<Vertex> vertices = new ArrayList<>();
+
+        for (String key : this.adjacencyMap.keySet()) {
+            vertices.add(this.adjacencyMap.get(key).get(0));
+        }
+
+        return vertices;
+    }
+
 }
